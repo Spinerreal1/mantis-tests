@@ -28,7 +28,7 @@ namespace mantis_tests
         }
         public void OpenManagePage()
         {
-            if (driver.Url == baseURL + "/mantisbt-2.25.2/account_page.php")
+            if (driver.Url == baseURL + "/mantisbt-2.20.0/account_page.php")
             {
                 return;
             }
