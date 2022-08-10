@@ -12,7 +12,7 @@ namespace mantis_tests
         [SetUp]
         public void SetupLogin()
         {
-            app.Auth.Login();
+            app.Auth.Login(new AccountData("administrator", "root"));
         }
     }
 }

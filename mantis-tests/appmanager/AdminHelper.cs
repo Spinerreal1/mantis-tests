@@ -39,7 +39,8 @@ namespace mantis_tests
 
                 accounts.Add(new AccountData()
                 {
-                    Name = name, Id = id
+                    Name = name, 
+                    Id = id
                 });
             }
             return accounts;
@@ -47,7 +48,7 @@ namespace mantis_tests
         public void DeleteAccount(AccountData account)
         {
             IWebDriver driver = OpenAppAndLogin();
-            driver.Url = baseUrl + "manage_user_edit_page.php?user_id=" + account.Id;
+            driver.Url = baseUrl + "/manage_user_edit_page.php?user_id=" + account.Id;
             driver.FindElement(By.CssSelector("input[value='Delete User']")).Click();
             driver.FindElement(By.CssSelector("input[value='Delete Account']")).Click();
         }

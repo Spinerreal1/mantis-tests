@@ -13,21 +13,22 @@ using System.Threading;
 
 namespace mantis_tests
 {
-        public class ApplicationManager
-     {
+        public class ApplicationManager : TestBase
+    {
 
         protected IWebDriver driver;
         protected string baseURL;
 
         public RegistrationHelper Registration { get; set; }
         public FtpHelper Ftp { get; set; }
-        protected LoginHelper loginHelper;
-        protected ManagementHelper managementHelper;
-        protected ProjectHelper projectHelper;
+        public LoginHelper loginHelper;
+        public ManagementHelper managementHelper;
+        public ProjectHelper projectHelper;
 
         public AdminHelper Admin { get; set; }
+        public APIHelper API { get; set; }
 
-        private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
+        private new static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
 
         public ApplicationManager() 
         {
@@ -41,6 +42,7 @@ namespace mantis_tests
             managementHelper = new ManagementHelper(this, baseURL);
             projectHelper = new ProjectHelper(this);
             Admin = new AdminHelper(this, baseURL);
+            API = new APIHelper(this);
 
         }
 

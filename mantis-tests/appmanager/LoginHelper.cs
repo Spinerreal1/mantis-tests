@@ -12,19 +12,58 @@ namespace mantis_tests
     public class LoginHelper : HelperBase
     {
         public LoginHelper(ApplicationManager manager) : base(manager) { }
-        public void Login()
+
+        public void Login(AccountData account)
         {
-            driver.FindElement(By.Id("username")).Clear();
-            driver.FindElement(By.Id("username")).SendKeys("administrator");
-            driver.FindElement(By.XPath("//input[@value='Login']")).Click();
-            driver.FindElement(By.Id("password")).Clear();
-            driver.FindElement(By.Id("password")).SendKeys("root");
-            driver.FindElement(By.XPath("//input[@value='Login']")).Click();
+
+            if (IsLoggedIn())
+            {
+                if (IsLoggedIn(account))
+                {
+                    return;
+                }
+
+                Logout();
+            }
+
+
+            Type(By.Id("username"), account.Name);
+            driver.FindElement(By.XPath("//input[@type= 'submit']")).Click();
+
+
+            Type(By.Id("password"), account.Password);
+            driver.FindElement(By.CssSelector("input[type=\"submit\"]")).Click();
         }
+
         public void Logout()
         {
-            driver.FindElement(By.ClassName("user-info")).Click();
-            driver.FindElement(By.LinkText("Logout")).Click();
+            if (IsLoggedIn())
+            {
+                driver.FindElement(By.ClassName("user-info")).Click();
+                driver.FindElement(By.CssSelector("#navbar-container > div.navbar-buttons.navbar-header.navbar-collapse.collapse > ul > li.grey.open > ul > li:nth-child(4) > a")).Click();
+            }
+        }
+
+        public bool IsLoggedIn()
+        {
+
+            return IsElementPresent(By.ClassName("user-info"));
+        }
+
+
+        public bool IsLoggedIn(AccountData account)
+        {
+            return IsLoggedIn()
+                && GetLoggedUserName() == account.Name;
+
+        }
+
+        private string GetLoggedUserName()
+        {
+            string text = driver.FindElement(By.ClassName("user-info")).Text;
+            return text;
+
+
         }
     }
 }
