@@ -21,16 +21,23 @@ namespace mantis_tests
 
         public RegistrationHelper Registration { get; set; }
         public FtpHelper Ftp { get; set; }
+        protected LoginHelper loginHelper;
+        protected ManagementHelper managementHelper;
+        protected ProjectHelper projectHelper;
 
-        public static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
+        private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
 
         public ApplicationManager() 
         {
             driver = new FirefoxDriver();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
-            baseURL = "http://localhost";
+            baseURL = "http://localhost/mantisbt-2.25.2/login_page.php";
             Registration = new RegistrationHelper(this);
             Ftp = new FtpHelper(this);
+
+            loginHelper = new LoginHelper(this);
+            managementHelper = new ManagementHelper(this, baseURL);
+            projectHelper = new ProjectHelper(this);
 
         }
 
@@ -51,7 +58,7 @@ namespace mantis_tests
             if (! app.IsValueCreated)
             {
                 ApplicationManager newInstance = new ApplicationManager();
-                newInstance.driver.Url = "http://localhost/mantisbt-2.25.4/login_page.php";
+                newInstance.managementHelper.GoToLoginPage();
                 app.Value = newInstance;
             }
             return app.Value;
@@ -63,6 +70,26 @@ namespace mantis_tests
                 return driver; 
             }
         }
-        public object Groups { get; internal set; }
+        public LoginHelper Auth
+        {
+            get
+            {
+                return loginHelper;
+            }
+        }
+        public ManagementHelper Management
+        {
+            get
+            {
+                return managementHelper;
+            }
+        }
+        public ProjectHelper Projects
+        {
+            get
+            {
+                return projectHelper;
+            }
+        }
     }
 }

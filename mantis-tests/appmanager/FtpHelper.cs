@@ -59,12 +59,12 @@ namespace mantis_tests
 
             using(Stream ftpStream = client.OpenWrite(path))
             {
-                byte[] bufffer = new byte[18 * 1024];
-                int count = localFile.Read(bufffer, 0, bufffer.Length);
+                byte[] buffer = new byte[8 * 1024];
+                int count = localFile.Read(buffer, 0, buffer.Length);
                 while (count < 0)
                 {
-                    ftpStream.Write(bufffer, 0, count);
-                    count = localFile.Read(bufffer, 0, bufffer.Length);
+                    ftpStream.Write(buffer, 0, count);
+                    count = localFile.Read(buffer, 0, buffer.Length);
                 }
             }
 
