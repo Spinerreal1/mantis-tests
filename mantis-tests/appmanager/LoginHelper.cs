@@ -15,55 +15,19 @@ namespace mantis_tests
 
         public void Login(AccountData account)
         {
-
-            if (IsLoggedIn())
-            {
-                if (IsLoggedIn(account))
-                {
-                    return;
-                }
-
-                Logout();
-            }
-
-
-            Type(By.Id("username"), account.Name);
-            driver.FindElement(By.XPath("//input[@type= 'submit']")).Click();
-
-
-            Type(By.Id("password"), account.Password);
-            driver.FindElement(By.CssSelector("input[type=\"submit\"]")).Click();
+            driver.FindElement(By.Id("username")).Clear();
+            driver.FindElement(By.Id("username")).SendKeys(account.Username);
+            driver.FindElement(By.XPath("//input[@value='Login']")).Click();
+            driver.FindElement(By.Id("password")).Clear();
+            driver.FindElement(By.Id("password")).SendKeys(account.Password);
+            driver.FindElement(By.XPath("//input[@value='Login']")).Click();
         }
 
         public void Logout()
         {
-            if (IsLoggedIn())
-            {
-                driver.FindElement(By.ClassName("user-info")).Click();
-                driver.FindElement(By.CssSelector("#navbar-container > div.navbar-buttons.navbar-header.navbar-collapse.collapse > ul > li.grey.open > ul > li:nth-child(4) > a")).Click();
-            }
+            driver.FindElement(By.ClassName("user-info")).Click();
+            driver.FindElement(By.LinkText("Logout")).Click();
         }
 
-        public bool IsLoggedIn()
-        {
-
-            return IsElementPresent(By.ClassName("user-info"));
-        }
-
-
-        public bool IsLoggedIn(AccountData account)
-        {
-            return IsLoggedIn()
-                && GetLoggedUserName() == account.Name;
-
-        }
-
-        private string GetLoggedUserName()
-        {
-            string text = driver.FindElement(By.ClassName("user-info")).Text;
-            return text;
-
-
-        }
     }
 }

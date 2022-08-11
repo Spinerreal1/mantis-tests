@@ -30,11 +30,11 @@ namespace mantis_tests
 
         private new static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
 
-        public ApplicationManager() 
+        private ApplicationManager() 
         {
             driver = new FirefoxDriver();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
-            baseURL = "http://localhost/mantisbt-2.20.0";
+            baseURL = "http://localhost/mantisbt-2.20.0/login_page.php";
             Registration = new RegistrationHelper(this);
             Ftp = new FtpHelper(this);
 
@@ -60,10 +60,10 @@ namespace mantis_tests
 
         public static ApplicationManager GetInstance()
         {
-            if (! app.IsValueCreated)
+            if (!app.IsValueCreated)
             {
                 ApplicationManager newInstance = new ApplicationManager();
-                newInstance.driver.Url = newInstance.baseURL + "/login_page.php";
+                newInstance.managementHelper.GoToLoginPage();
                 app.Value = newInstance;
             }
             return app.Value;

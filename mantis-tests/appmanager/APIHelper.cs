@@ -11,7 +11,7 @@ namespace mantis_tests
     {
         public APIHelper(ApplicationManager manager) : base(manager) { }
 
-        public void CreateNewIssue(AccountData account, ProjectData project, IssueData issueData)
+        public void CreateNewIssue(AccountData account, ProjectData projectData, IssueData issueData)
         {
             Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
             Mantis.IssueData issue = new Mantis.IssueData();
@@ -19,29 +19,30 @@ namespace mantis_tests
             issue.description = issueData.Description;
             issue.category = issueData.Category;
             issue.project = new Mantis.ObjectRef();
-            issue.project.id = project.Id;
-            client.mc_issue_add(account.Name, account.Password, issue);
+            issue.project.id = projectData.Id;
+            client.mc_issue_add(account.Username, account.Password, issue);
         }
+
         public void CreateNewProject(AccountData account, ProjectData projectData)
         {
-            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
+            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient("MantisConnectPort", "http://localhost/mantisbt-2.25.2/api/soap/mantisconnect.php?WSDL");
             Mantis.ProjectData project = new Mantis.ProjectData();
             project.name = projectData.Name;
-
-            client.mc_project_add(account.Name, account.Password, project);
-
+            client.mc_project_add(account.Username, account.Password, project);
         }
-
-
-
-        public Mantis.ProjectData[] GetProjectsList(AccountData account)
+        public List<ProjectData> GetProjectsList(AccountData account)
         {
-            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
+            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient("MantisConnectPort", "http://localhost/mantisbt-2.25.2/api/soap/mantisconnect.php?WSDL");
+            Mantis.ProjectData[] priojectsback = client.mc_projects_get_user_accessible(account.Username, account.Password);
+            List<ProjectData> projects = new List<ProjectData>();
 
-            Mantis.ProjectData[] projects = client.mc_projects_get_user_accessible(account.Name, account.Password);
+            foreach (Mantis.ProjectData projectback in priojectsback)
+            {
+                ProjectData project = new ProjectData(projectback.name);
+                projects.Add(project);
+            }
 
             return projects;
-
         }
     }
 }

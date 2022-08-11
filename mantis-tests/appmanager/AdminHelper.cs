@@ -6,17 +6,15 @@ using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
-using SimpleBrowser.WebDriver;
 using System.Text.RegularExpressions;
 
 namespace mantis_tests
 {
     public class AdminHelper : HelperBase
     {
-        private string baseUrl;
+        public string baseUrl;
         public AdminHelper(ApplicationManager manager) : base(manager) 
         {
-            this.baseUrl = baseUrl;
         }
 
         public AdminHelper(ApplicationManager manager, string baseURL) : this(manager)
@@ -39,7 +37,7 @@ namespace mantis_tests
 
                 accounts.Add(new AccountData()
                 {
-                    Name = name, 
+                    Username = name, 
                     Id = id
                 });
             }
@@ -47,7 +45,6 @@ namespace mantis_tests
         }
         public void DeleteAccount(AccountData account)
         {
-            IWebDriver driver = OpenAppAndLogin();
             driver.Url = baseUrl + "/manage_user_edit_page.php?user_id=" + account.Id;
             driver.FindElement(By.CssSelector("input[value='Delete User']")).Click();
             driver.FindElement(By.CssSelector("input[value='Delete Account']")).Click();
@@ -55,7 +52,6 @@ namespace mantis_tests
 
         private IWebDriver OpenAppAndLogin()
         {
-            IWebDriver driver = new SimpleBrowserDriver();
             driver.Url = baseUrl + "/login_page.php";
             driver.FindElement(By.Name("username")).SendKeys("administrator");
             driver.FindElement(By.Name("password")).SendKeys("root");
