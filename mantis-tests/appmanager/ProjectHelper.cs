@@ -26,6 +26,12 @@ namespace mantis_tests
             return this;
         }
 
+        public void Remove(AccountData account, string projectId)
+        {
+            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
+            client.mc_project_delete(account.Username, account.Password, projectId);
+        }
+
         public void Remove(ProjectData project)
         {
             manager.Management.GoToProjectsPage();
@@ -38,7 +44,7 @@ namespace mantis_tests
             driver.FindElement(By.LinkText(project.Name)).Click();
         }
 
-        public ProjectHelper Remove(int index)
+        public ProjectHelper Remove(AccountData account, int index)
         {
             manager.Management.OpenManagePage();
             manager.Management.GoToMangeProjPage();

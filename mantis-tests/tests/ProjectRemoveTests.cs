@@ -22,7 +22,9 @@ namespace mantis_tests
 
             List<ProjectData> oldProjects = app.API.GetProjectsList(account);
 
-            app.Projects.Remove(oldProjects[0]);
+            ProjectData toBeRemoved = oldProjects[0];
+
+            app.Projects.Remove(account, toBeRemoved.Id);
 
             List<ProjectData> newProjects = app.API.GetProjectsList(account);
             oldProjects.RemoveAt(0);
