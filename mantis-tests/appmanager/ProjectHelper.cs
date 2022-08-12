@@ -26,9 +26,16 @@ namespace mantis_tests
             return this;
         }
 
-        internal void Remove(ProjectData projectData)
+        public void Remove(ProjectData project)
         {
-            throw new NotImplementedException();
+            manager.Management.GoToProjectsPage();
+            SelectProject(project);
+            RemoveProject();
+        }
+
+        private void SelectProject(ProjectData project)
+        {
+            driver.FindElement(By.LinkText(project.Name)).Click();
         }
 
         public ProjectHelper Remove(int index)
