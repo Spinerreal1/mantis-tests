@@ -19,7 +19,7 @@ namespace mantis_tests
         [Test]
         public void ProjectCreationTest()
         {
-            ProjectData project = new ProjectData("Test_Project");
+            ProjectData project = new ProjectData(GenerateRandomString(10));
 
             AccountData account = new AccountData("administrator", "root");
 

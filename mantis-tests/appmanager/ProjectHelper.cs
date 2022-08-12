@@ -25,6 +25,12 @@ namespace mantis_tests
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             return this;
         }
+
+        internal void Remove(ProjectData projectData)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProjectHelper Remove(int index)
         {
             manager.Management.OpenManagePage();

@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,12 +17,12 @@ namespace mantis_tests
 
             if (app.API.GetProjectsList(account).Count == 0)
             {
-                app.API.CreateNewProject(account, new ProjectData("Test_Project"));
+                app.API.CreateNewProject(account, new ProjectData(GenerateRandomString(10)));
             }
 
             List<ProjectData> oldProjects = app.API.GetProjectsList(account);
 
-            app.Projects.Remove(0);
+            app.Projects.Remove(oldProjects[0]);
 
             List<ProjectData> newProjects = app.API.GetProjectsList(account);
             oldProjects.RemoveAt(0);
